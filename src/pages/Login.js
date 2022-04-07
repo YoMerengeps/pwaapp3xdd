@@ -1,21 +1,28 @@
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
 import {
   Box,
   Button,
-  Container,
-  Grid,
-  Link,
+  Container, Link,
   TextField,
   Typography
 } from '@material-ui/core';
-import FacebookIcon from '../icons/Facebook';
-import GoogleIcon from '../icons/Google';
+import { Formik } from 'formik';
+import { Helmet } from 'react-helmet';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { firebaseIniciarSesion } from 'src/utils/FirebaseUtil';
+import * as Yup from 'yup';
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const iniciarSesion = async credenciales => {
+    let sesionIniciada = await firebaseIniciarSesion(credenciales.email, credenciales.password);
+
+    if (sesionIniciada) {
+      navigate('/app/dashboard', { replace: true });
+    } else {
+      alert('Las credenciales no son correctas');
+    }
+  }
 
   return (
     <>
@@ -41,9 +48,7 @@ const Login = () => {
               email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
-            }}
+            onSubmit={iniciarSesion}
           >
             {({
               errors,
@@ -70,56 +75,7 @@ const Login = () => {
                     Sign in on the internal platform
                   </Typography>
                 </Box>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Box
-                  sx={{
-                    pb: 1,
-                    pt: 3
-                  }}
-                >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
-                  </Typography>
-                </Box>
+
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -155,7 +111,7 @@ const Login = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    Iniciar sesión
                   </Button>
                 </Box>
                 <Typography

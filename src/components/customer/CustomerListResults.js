@@ -1,9 +1,4 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -16,7 +11,10 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import getInitials from '../../utils/getInitials';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import { firebaseEliminar } from 'src/utils/FirebaseUtil';
 
 const CustomerListResults = ({ customers, ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -127,10 +125,11 @@ const CustomerListResults = ({ customers, ...rest }) => {
                   <TableCell>
                     {customer.phone}
                   </TableCell>
+
                   <TableCell>
                     <Button
                       onClick={() => {
-                        // firebaseEliminar('clientes', customer.id)
+                        firebaseEliminar('clientes', customer.id)
                         alert("El cliente se eliminó con éxito.")
                         window.location.reload(true);
                       }}
@@ -140,6 +139,7 @@ const CustomerListResults = ({ customers, ...rest }) => {
                       Eliminar
                     </Button>
                   </TableCell>
+
                 </TableRow>
               ))}
             </TableBody>

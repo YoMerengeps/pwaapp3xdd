@@ -1,11 +1,12 @@
-import { Helmet } from 'react-helmet';
 import { Box, Container } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { firebaseBuscar } from 'src/utils/FirebaseUtil';
 import CustomerListResults from '../components/customer/CustomerListResults';
 import CustomerListToolbar from '../components/customer/CustomerListToolbar';
 
 const CustomerList = () => {
+
   const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const CustomerList = () => {
         </Box>
       </Container>
     </Box>
-  </>
-};
+  </>;
+}
 
 export default CustomerList;
